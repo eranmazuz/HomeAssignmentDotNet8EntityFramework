@@ -1,4 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
+var myAllowAllOrigins = "_myAllowAllOrigins";
 
 // Add services to the container.
 
@@ -7,8 +8,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: myAllowAllOrigins,
+        policyBuilder => policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 var app = builder.Build();
 
+app.UseCors(myAllowAllOrigins);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
