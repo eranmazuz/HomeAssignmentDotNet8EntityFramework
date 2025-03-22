@@ -8,7 +8,7 @@
     ports:
       - "1433:1433"
     networks:
-      - app_network
+      - dotnet_network
 
   dotnetbackend:
     build:
@@ -24,7 +24,7 @@
     depends_on:
       - sqlserver
     networks:
-      - app_network
+      - dotnet_network
 
 networks:
-  app_network:
+  dotnet_network:
