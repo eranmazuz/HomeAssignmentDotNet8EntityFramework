@@ -1,3 +1,4 @@
+using HomeAssignmentDotNet8EntityFramework.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,23 +9,34 @@ namespace HomeAssignmentDotNet8EntityFramework
     public class CategoriesController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<Dictionary<string, string>>> Get()
+        public ActionResult<IEnumerable<Category>> Get()
         {
-            List<Dictionary<string, string>> categories =
+            List<Category> categories =
             [
-                new Dictionary<string, string>()
+                new Category()
                 {
-                    { "name", "category 1" },
+                    Id = 1,
+                    Name = "Category 1"
                 },
-
-                new Dictionary<string, string>()
+                new Category()
                 {
-                    { "name", "category 2" },
+                    Id = 2,
+                    Name = "Category 2"
                 },
-
-                new Dictionary<string, string>()
+                new Category()
                 {
-                    { "name", "category 3" },
+                    Id = 3,
+                    Name = "Category 3"
+                },
+                new Category()
+                {
+                    Id = 4,
+                    Name = "Category 4"
+                },
+                new Category()
+                {
+                    Id = 5,
+                    Name = "Category 5"
                 }
             ];
             return Ok(categories);
