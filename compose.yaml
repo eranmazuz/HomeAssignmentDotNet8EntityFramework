@@ -1,0 +1,30 @@
+﻿services:
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "[Strong_password]"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - app_network
+
+  dotnetbackend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotnetbackend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5200
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HomeworkDB;User Id=sa;Password=[Strong_password];TrustServerCertificate=True
+    ports:
+      - "5200:5200"
+    depends_on:
+      - sqlserver
+    networks:
+      - app_network
+
+networks:
+  app_network:

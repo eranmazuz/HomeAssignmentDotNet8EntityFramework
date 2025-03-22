@@ -15,22 +15,32 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddCors(options =>
+if (builder.Environment.IsDevelopment())
 {
-    options.AddPolicy(name: myAllowAllOrigins,
-        policyBuilder => policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: myAllowAllOrigins,
+            policyBuilder => policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    }); 
+}
 
 var app = builder.Build();
 
-app.UseCors(myAllowAllOrigins);
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+    dbContext.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(myAllowAllOrigins);
+
 }
 
+// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
