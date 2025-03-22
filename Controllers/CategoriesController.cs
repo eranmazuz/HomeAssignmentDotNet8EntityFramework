@@ -1,6 +1,8 @@
+using HomeAssignmentDotNet8EntityFramework.Data;
 using HomeAssignmentDotNet8EntityFramework.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeAssignmentDotNet8EntityFramework
 {
@@ -8,37 +10,17 @@ namespace HomeAssignmentDotNet8EntityFramework
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<Category>> Get()
+        private readonly DataContext _context;
+
+        public CategoriesController(DataContext context)
         {
-            List<Category> categories =
-            [
-                new Category()
-                {
-                    Id = 1,
-                    Name = "Category 1"
-                },
-                new Category()
-                {
-                    Id = 2,
-                    Name = "Category 2"
-                },
-                new Category()
-                {
-                    Id = 3,
-                    Name = "Category 3"
-                },
-                new Category()
-                {
-                    Id = 4,
-                    Name = "Category 4"
-                },
-                new Category()
-                {
-                    Id = 5,
-                    Name = "Category 5"
-                }
-            ];
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Category>>>Get()
+        {
+            var categories = await _context.Categories.ToListAsync();
             return Ok(categories);
         }
     }
