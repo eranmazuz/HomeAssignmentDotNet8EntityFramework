@@ -1,0 +1,6 @@
+@HomeAssignmentDotNet8EntityFramework_HostAddress = http://localhost:5200
+
+GET {{HomeAssignmentDotNet8EntityFramework_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
